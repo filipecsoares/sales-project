@@ -11,12 +11,15 @@
 */
 package com.filipe.salesservice.service;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.filipe.salesservice.dto.SaleDTO;
+import com.filipe.salesservice.dto.SaleSuccessDTO;
+import com.filipe.salesservice.dto.SaleSumDTO;
 import com.filipe.salesservice.entities.Sale;
 import com.filipe.salesservice.repositories.SaleRepository;
 import com.filipe.salesservice.repositories.SellerRepository;
@@ -35,5 +38,15 @@ public class SaleService {
         sellerRepository.findAll();
         Page<Sale> sales = repository.findAll(pageable);
         return sales.map(SaleDTO::new);
+    }
+
+    @Transactional(readOnly = true)
+    public List<SaleSumDTO> amountGroupBySeller() {
+        return repository.amountGroupBySeller();
+    }
+
+    @Transactional(readOnly = true)
+    public List<SaleSuccessDTO> successGroupBySeller() {
+        return repository.successGroupBySeller();
     }
 }
